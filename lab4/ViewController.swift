@@ -10,9 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UITextView!
+    @IBOutlet weak var distanceLabel: UILabel!
+    
+    var contactFromTable: Contact?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        nameLabel.text = contactFromTable?.name
+        profileImage.image = contactFromTable?.image
+        descriptionLabel.text = contactFromTable?.description
+        distanceLabel.text = String(contactFromTable!.distance) + " miles"
     }
 
 

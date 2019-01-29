@@ -14,7 +14,7 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        loadContacts()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -32,15 +32,22 @@ class TableViewController: UITableViewController {
         return contacts.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTVCell", for: indexPath) as? CustomTVCell
 
-        // Configure the cell...
-
-        return cell
+        let thisContact = contacts[indexPath.row]
+        cell?.nameLabel?.text = thisContact.name
+        cell?.photoImageView.image = thisContact.image
+        cell?.descriptionLabel.text = thisContact.description
+        cell?.distanceLabel.text = String(thisContact.distance) + " miles"
+        
+        return cell!
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -77,15 +84,18 @@ class TableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        // Customize the data passing for the specific show segue
+        if segue.identifier == "showSelectedContact" {
+            let destVC = segue.destination as? ViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow
+            destVC?.contactFromTable = contacts[(selectedIndexPath?.row)!]
+        }
     }
-    */
+    
 
     func loadContacts() {
         let photo1 = UIImage(named: "sloth1")!
@@ -97,16 +107,16 @@ class TableViewController: UITableViewController {
         let photo7 = UIImage(named: "sloth7")!
         let photo8 = UIImage(named: "sloth8")!
         
-        let contact1 = Contact(name: "Bobert", distance: 1, description: "Hello! I'm new to the city. Let's eat leaves together!", image: photo1)
-        let contact2 = Contact(name: "Sarah", distance: 1, description: "Looking for someone who is good at hanging around ;)", image: photo2)
-        let contact3 = Contact(name: "Dilbert", distance: 1, description: "Eat. Sleep. Sleep. Sleep. Repeat.", image: photo3)
-        let contact4 = Contact(name: "Hannah", distance: 1, description: "Looking for a sloth to sweep me off my claws <3", image: photo4)
+        let contact1 = Contact(name: "Bobert", distance: Int.random(in: 1 ..< 10), description: "Hello! I'm new to the forest. Let's eat leaves together!", image: photo1)
+        let contact2 = Contact(name: "Sarah", distance: Int.random(in: 1 ..< 10), description: "Looking for someone who is good at hanging around ;)", image: photo2)
+        let contact3 = Contact(name: "Dilbert", distance: Int.random(in: 1 ..< 10), description: "Eat. Sleep. Sleep. Sleep. Repeat.", image: photo3)
+        let contact4 = Contact(name: "Hannah", distance: Int.random(in: 1 ..< 10), description: "Looking for a sloth to sweep me off my claws <3", image: photo4)
         
-        let contact5 = Contact(name: "Slothiboy", distance: 1, description: "Who wants to eat ALL DAY LONG?", image: photo5)
-        let contact6 = Contact(name: "Larry", distance: 1, description: "Hit me up with you want to climb trees!", image: photo6)
-        let contact7 = Contact(name: "Taylor", distance: 1, description: "Just moved to this tree and looking for some lazy friends.", image: photo7)
-        let contact8 = Contact(name: "Slothigirl", distance: 1, description: "DM me with your favorite leaf flavor!", image: photo8)
+        let contact5 = Contact(name: "Slothiboy", distance: Int.random(in: 1 ..< 10), description: "Who wants to eat ALL DAY LONG?", image: photo5)
+        let contact6 = Contact(name: "Larry", distance: Int.random(in: 1 ..< 10), description: "Hit me up if you want to climb trees!", image: photo6)
+        let contact7 = Contact(name: "Taylor", distance: Int.random(in: 1 ..< 10), description: "Just moved to this tree and looking for some lazy friends.", image: photo7)
+        let contact8 = Contact(name: "Slothigirl", distance: Int.random(in: 1 ..< 10), description: "DM me with your favorite leaf flavor!", image: photo8)
         
-        contacts += [contact1, contact2, contact3, contact4, contact5, contact6, contact7, contact8]
+        contacts += [contact1, contact2, contact3, contact4, contact5, contact6, contact7, contact8].sorted(by: {(a, b) -> Bool in return a.distance < b.distance})
     }
 }
