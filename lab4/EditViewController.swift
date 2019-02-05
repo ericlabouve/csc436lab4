@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import os.log
 
-class ViewController: UIViewController {
+class EditViewController: UIViewController {
 
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -25,6 +26,8 @@ class ViewController: UIViewController {
         distanceLabel.text = String(contactFromTable!.distance) + " miles"
     }
 
-
+    override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
+        os_log("Unwind", log: OSLog.default, type: .debug)
+    }
 }
 

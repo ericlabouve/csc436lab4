@@ -7,19 +7,43 @@
 //
 
 import UIKit
+import os.log
 
 class TableViewController: UITableViewController {
 
     var contacts = [Contact]()
+    var photos = [UIImage]()
+    var names = [String]()
+    var descriptions = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadContacts()
+        loadContactInfo()
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
+        self.navigationItem.rightBarButtonItem = addButton
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    @objc func insertNewObject(_ sender: AnyObject) {
+        //let custNum = customers.count + 1
+        
+        //customers.append(Customer(name: String(custNum), country: String(custNum * 10), rep: String(custNum * 100)))
+        contacts.append(generateRandomContact())
+        
+        self.tableView.reloadData()
+        
+        //updatePersistentStorage()
+    }
+    
+    func generateRandomContact() -> Contact {
+        
+        return Contact(name: names[Int.random(in: 0..<names.count)], distance: Int.random(in: 0..<6), description: descriptions[Int.random(in: 0..<descriptions.count)], image: photos[Int.random(in: 0..<photos.count)])
     }
 
     // MARK: - Table view data source
@@ -89,34 +113,23 @@ class TableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Customize the data passing for the specific show segue
-        if segue.identifier == "showSelectedContact" {
-            let destVC = segue.destination as? ViewController
+        switch(segue.identifier ?? "") {
+        case "showSelectedContact":
+            os_log("Editing contact.", log: OSLog.default, type: .debug)
+            let destVC = segue.destination as? EditViewController
             let selectedIndexPath = tableView.indexPathForSelectedRow
             destVC?.contactFromTable = contacts[(selectedIndexPath?.row)!]
+         case "AddItem":
+            os_log("Adding a new contact.", log: OSLog.default, type: .debug)
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
     }
     
 
-    func loadContacts() {
-        let photo1 = UIImage(named: "sloth1")!
-        let photo2 = UIImage(named: "sloth2")!
-        let photo3 = UIImage(named: "sloth3")!
-        let photo4 = UIImage(named: "sloth4")!
-        let photo5 = UIImage(named: "sloth5")!
-        let photo6 = UIImage(named: "sloth6")!
-        let photo7 = UIImage(named: "sloth7")!
-        let photo8 = UIImage(named: "sloth8")!
-        
-        let contact1 = Contact(name: "Bobert", distance: Int.random(in: 1 ..< 10), description: "Hello! I'm new to the forest. Let's eat leaves together!", image: photo1)
-        let contact2 = Contact(name: "Sarah", distance: Int.random(in: 1 ..< 10), description: "Looking for someone who is good at hanging around ;)", image: photo2)
-        let contact3 = Contact(name: "Dilbert", distance: Int.random(in: 1 ..< 10), description: "Eat. Sleep. Sleep. Sleep. Repeat.", image: photo3)
-        let contact4 = Contact(name: "Hannah", distance: Int.random(in: 1 ..< 10), description: "Looking for a sloth to sweep me off my claws <3", image: photo4)
-        
-        let contact5 = Contact(name: "Slothiboy", distance: Int.random(in: 1 ..< 10), description: "Who wants to eat ALL DAY LONG?", image: photo5)
-        let contact6 = Contact(name: "Larry", distance: Int.random(in: 1 ..< 10), description: "Hit me up if you want to climb trees!", image: photo6)
-        let contact7 = Contact(name: "Taylor", distance: Int.random(in: 1 ..< 10), description: "Just moved to this tree and looking for some lazy friends.", image: photo7)
-        let contact8 = Contact(name: "Slothigirl", distance: Int.random(in: 1 ..< 10), description: "DM me with your favorite leaf flavor!", image: photo8)
-        
-        contacts += [contact1, contact2, contact3, contact4, contact5, contact6, contact7, contact8].sorted(by: {(a, b) -> Bool in return a.distance < b.distance})
+    func loadContactInfo() {
+        photos = [UIImage(named: "sloth1")!, UIImage(named: "sloth2")!, UIImage(named: "sloth3")!, UIImage(named: "sloth4")!, UIImage(named: "sloth5")!, UIImage(named: "sloth6")!, UIImage(named: "sloth7")!, UIImage(named: "sloth8")!]
+        names = ["Bobert", "Sarah", "Dilbert", "Hannah", "Slothiboy", "Larry", "Taylor", "Slothigirl"]
+        descriptions = ["Hello! I'm new to the forest. Let's eat leaves together!", "Looking for someone who is good at hanging around ;)", "Eat. Sleep. Sleep. Sleep. Repeat.", "Looking for a sloth to sweep me off my claws <3", "Who wants to eat ALL DAY LONG?", "Hit me up if you want to climb trees!", "Just moved to this tree and looking for some lazy friends.", "DM me with your favorite leaf flavor!"]
     }
 }
