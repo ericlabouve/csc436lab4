@@ -48,5 +48,8 @@ class AddContactViewController: UIViewController {
         contact = Contact(name: name, distance: dist, description: desc, image: image)
     }
     
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
     
 }

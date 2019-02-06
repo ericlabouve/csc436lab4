@@ -89,10 +89,23 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return 90
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            contacts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
+        }
+    }
+    
     
     
     // MARK: - Actions
     @IBAction func unwindFromAddContactVC(sender: UIStoryboardSegue) {
+        resignFirstResponder()
         if let sourceViewController = sender.source as? AddContactViewController, let contact = sourceViewController.contact {
             contacts.append(contact)
             tableView.reloadData()
