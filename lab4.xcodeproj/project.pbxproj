@@ -17,6 +17,8 @@
 		48C3584721FFB10C00609661 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C3584621FFB10C00609661 /* Contact.swift */; };
 		48C3584921FFB72C00609661 /* CustomTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C3584821FFB72C00609661 /* CustomTVCell.swift */; };
 		48C3585721FFC61D00609661 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C3585621FFC61D00609661 /* TableViewController.swift */; };
+		48DB2B95220A3C95001016F1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DB2B94220A3C95001016F1 /* MainViewController.swift */; };
+		48DB2B97220A4514001016F1 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DB2B96220A4514001016F1 /* AddContactViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		48C3584621FFB10C00609661 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		48C3584821FFB72C00609661 /* CustomTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTVCell.swift; sourceTree = "<group>"; };
 		48C3585621FFC61D00609661 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		48DB2B94220A3C95001016F1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		48DB2B96220A4514001016F1 /* AddContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				48C3581821FFADB300609661 /* AppDelegate.swift */,
 				48C3581A21FFADB300609661 /* EditViewController.swift */,
 				48C3581C21FFADB300609661 /* Main.storyboard */,
+				48DB2B96220A4514001016F1 /* AddContactViewController.swift */,
+				48DB2B94220A3C95001016F1 /* MainViewController.swift */,
 				48C3585621FFC61D00609661 /* TableViewController.swift */,
 				48C3584821FFB72C00609661 /* CustomTVCell.swift */,
 				48C3581F21FFADB400609661 /* Assets.xcassets */,
@@ -267,7 +273,9 @@
 			files = (
 				48C3584721FFB10C00609661 /* Contact.swift in Sources */,
 				48C3581B21FFADB300609661 /* EditViewController.swift in Sources */,
+				48DB2B97220A4514001016F1 /* AddContactViewController.swift in Sources */,
 				48C3584921FFB72C00609661 /* CustomTVCell.swift in Sources */,
+				48DB2B95220A3C95001016F1 /* MainViewController.swift in Sources */,
 				48C3585721FFC61D00609661 /* TableViewController.swift in Sources */,
 				48C3581921FFADB300609661 /* AppDelegate.swift in Sources */,
 			);
