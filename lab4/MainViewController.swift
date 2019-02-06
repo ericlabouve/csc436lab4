@@ -12,13 +12,55 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // Maintain this list for the TableView
     var contacts = [Contact]()
-    var photos = [UIImage]()
-    var names = [String]()
-    var descriptions = [String]()
+    // Reference to our tableView since we are its datasource and delegate
     @IBOutlet weak var tableView: UITableView!
+    // These two items are used for persistent storage
+    // This form of storage allows us to save complex data structures
+    static let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let archiveURL = documentsDirectory.appendingPathComponent("savedContacts")
+    // Allows for storing key-value pairs persistently across launches
+    var ourDefaults = UserDefaults.standard
+    // Used for a timestamp in a popup dialog window to let the user know when the last save time was
+    var dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        // init with persisted data, if any
+        if let lastUpdate = ourDefaults.object(forKey: "lastUpdate") as? Date {
+            // Create and show the dialog with the stored date from the UserDefaults
+            let updateString = dateFormatter.string(from: lastUpdate)
+            print(">"+updateString)
+            let dialogString = "Data was last updated:\n\(updateString)"
+            let dialog = UIAlertController(title: "Data Restored", message: dialogString, preferredStyle: .alert)
+            let action = UIAlertAction(title: "Go Away", style: .cancel, handler: nil)
+            dialog.addAction(action)
+            present(dialog, animated: true, completion: nil)
+            // Load saved contact as a JSON, decode it, then store it in 'contacts'
+            do {
+                let data = try Data(contentsOf: MainViewController.archiveURL)
+                let decoder = JSONDecoder()
+                let tempArr = try decoder.decode([Contact].self, from: data)
+                contacts = tempArr
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    // Save 'contacts' and the time. Use then whenever there is a change to the 'contacts' list.
+    func updatePersistentStorage() {
+        // persist data
+        let encoder = JSONEncoder()
+        do {
+            let jsonData = try encoder.encode(contacts)
+            try jsonData.write(to: MainViewController.archiveURL)
+            // timestamp last update
+            ourDefaults.set(Date(), forKey: "lastUpdate")
+        } catch {
+            print(error)
+        }
     }
     
 
@@ -67,7 +109,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTVCell", for: indexPath) as? CustomTVCell
         let thisContact = contacts[indexPath.row]
         cell?.nameLabel?.text = thisContact.name
-        cell?.photoImageView.image = thisContact.image
+        cell?.photoImageView.image = UIImage(named: thisContact.UIImageName)
         cell?.descriptionLabel.text = thisContact.description
         cell?.distanceLabel.text = String(thisContact.distance) + " miles"
         return cell!
@@ -89,6 +131,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             contacts.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadData()
+            updatePersistentStorage()
         }
     }
     
@@ -101,12 +144,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let sourceViewController = sender.source as? AddContactViewController, let contact = sourceViewController.contact {
             contacts.append(contact)
             tableView.reloadData()
+            updatePersistentStorage()
         }
     }
     
     // This is called once we have clicked 'Save' in EditContactViewController
     @IBAction func unwindFromEditContactVC(sender: UIStoryboardSegue) {
         tableView.reloadData()
+        updatePersistentStorage()
     }
     
 }

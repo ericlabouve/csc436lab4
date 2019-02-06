@@ -22,7 +22,9 @@ class EditContactViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = contact?.image
+        // Load the Image
+        imageView.image = UIImage(named: (contact?.UIImageName)!)
+        // Load the text fields
         nameLabel.text = contact?.name
         descriptionLabel.text = contact?.description
         distanceLabel.text = String(contact?.distance ?? -1)
@@ -52,7 +54,6 @@ class EditContactViewController: UIViewController, UITextFieldDelegate {
     // When 'Save' is hit, update the shared contact reference with the updated information
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
          contact?.name = (nameLabel?.text!)!
-         contact?.image = (imageView?.image!)!
          contact?.description = descriptionLabel.text!
          contact?.distance = Int((distanceLabel?.text)!) ?? 0
      }

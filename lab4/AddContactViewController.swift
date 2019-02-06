@@ -19,16 +19,20 @@ class AddContactViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var distanceField: UITextField!
     // The contact to fill out and return to MainViewController
     var contact: Contact?
-    var photos = [UIImage]()
+    
+    var photoNames: [String] = []
+    var photoName: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Load all possible images and select an image at random
-        photos = [UIImage(named: "sloth1")!, UIImage(named: "sloth2")!, UIImage(named: "sloth3")!, UIImage(named: "sloth4")!, UIImage(named: "sloth5")!, UIImage(named: "sloth6")!, UIImage(named: "sloth7")!, UIImage(named: "sloth8")!]
-        imageView.image = photos[Int.random(in: 0..<photos.count)]
+        // Load a random image and save the image's name
+        photoNames = ["sloth1", "sloth2", "sloth3", "sloth4", "sloth5", "sloth6", "sloth7", "sloth8"]
+        photoName = photoNames[Int.random(in: 0..<photoNames.count)]
+        imageView.image = UIImage(named: photoName)
+        // Load the text fields
         nameField.text = ""
         descriptionField.text = ""
-        distanceField.text = "0"
+        distanceField.text = ""
         // Will call rextFieldShouldReturn when return is hit
         nameField.delegate = self
         descriptionField.delegate = self
@@ -57,8 +61,7 @@ class AddContactViewController: UIViewController, UITextFieldDelegate {
         let name = nameField.text!
         let dist = Int(distanceField.text ?? "0") ?? 0
         let desc = descriptionField.text!
-        let image = imageView.image!
-        contact = Contact(name: name, distance: dist, description: desc, image: image)
+        contact = Contact(name: name, distance: dist, description: desc, UIImageName: photoName)
     }
     
 }
